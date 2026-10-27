@@ -1,0 +1,230 @@
+<%- include('partials/header') %>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+  <a href="/">Dashboard</a> &gt; <span>Project Architecture & About</span>
+</div>
+
+<div class="page-header-row">
+  <div>
+    <h1 class="page-title">About StudentSphere Portal</h1>
+    <p class="page-subtitle">Academic assignment documentation for MITAOE Web Technology Practical No. 5.</p>
+  </div>
+</div>
+
+<div class="about-grid">
+  <!-- Left Column: Academic Metadata & Student Bio -->
+  <div class="about-card">
+    <div class="about-card-header">
+      <span class="badge-dept-lg">Academic Attribution</span>
+      <h2>Student & Course Details</h2>
+    </div>
+    <div class="about-card-body">
+      <table class="meta-table">
+        <tr>
+          <th>Student Name</th>
+          <td><strong><%= studentInfo.name %></strong></td>
+        </tr>
+        <tr>
+          <th>PRN</th>
+          <td><span class="badge-prn"><%= studentInfo.prn %></span></td>
+        </tr>
+        <tr>
+          <th>Class & Branch</th>
+          <td><%= studentInfo.class %></td>
+        </tr>
+        <tr>
+          <th>Institution</th>
+          <td><%= studentInfo.institution %></td>
+        </tr>
+        <tr>
+          <th>Subject</th>
+          <td><%= studentInfo.course %></td>
+        </tr>
+        <tr>
+          <th>Practical</th>
+          <td><%= studentInfo.assignment %></td>
+        </tr>
+        <tr>
+          <th>Hosting Engine</th>
+          <td>Node.js &bull; Express.js &bull; EJS &bull; Render Cloud</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Right Column: Architecture Highlights -->
+  <div class="about-card">
+    <div class="about-card-header">
+      <span class="badge-accent">Technical Overview</span>
+      <h2>Architecture & Middleware Pipeline</h2>
+    </div>
+    <div class="about-card-body">
+      <p class="desc-text">
+        <strong>StudentSphere</strong> implements an enterprise-grade Express.js architectural flow structured around three distinct middleware tiers:
+      </p>
+
+      <ul class="feature-bullets">
+        <li>
+          <strong>1. Built-in Middleware:</strong>
+          <code>express.static()</code> serves compiled CSS and client assets; <code>express.urlencoded()</code> parses HTML form bodies; <code>express.json()</code> handles REST payloads.
+        </li>
+        <li>
+          <strong>2. Third-Party Middleware:</strong>
+          <code>morgan</code> automatically formats and outputs real-time HTTP request transactions to the server console.
+        </li>
+        <li>
+          <strong>3. Custom Middleware:</strong>
+          <code>requestLogger</code> calculates microsecond request duration; <code>responseTimeHeader</code> attaches the <code>X-Response-Time</code> header; <code>attachRequestContext</code> populates view variables.
+        </li>
+        <li>
+          <strong>4. Server-Side Validation:</strong>
+          <code>express-validator</code> rigorously validates 10+ constraints on inputs before persisting them to JSON storage.
+        </li>
+        <li>
+          <strong>5. Centralized Error Handling:</strong>
+          Four-parameter error middleware <code>(err, req, res, next)</code> intercepts operational faults and returns formatted UI or JSON responses.
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Route Reference Table -->
+<div class="panel mt-4">
+  <div class="panel-header">
+    <h2 class="panel-title">System Route Catalog</h2>
+    <span class="panel-badge">Express Router Endpoints</span>
+  </div>
+  <div class="panel-body p-0">
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>HTTP Method</th>
+            <th>Route Endpoint</th>
+            <th>Router Module</th>
+            <th>Description</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge-method get">GET</span></td>
+            <td><code>/</code></td>
+            <td><code>pageRoutes.js</code></td>
+            <td>Renders the main academic dashboard with statistics</td>
+            <td>HTML View</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method get">GET</span></td>
+            <td><code>/about</code></td>
+            <td><code>pageRoutes.js</code></td>
+            <td>Displays architecture documentation & academic credentials</td>
+            <td>HTML View</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method get">GET</span></td>
+            <td><code>/health</code></td>
+            <td><code>pageRoutes.js</code></td>
+            <td>Returns server uptime and operational status</td>
+            <td>JSON Health</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method get">GET</span></td>
+            <td><code>/students</code></td>
+            <td><code>studentRoutes.js</code></td>
+            <td>Displays searchable directory of all registered students</td>
+            <td>HTML View</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method get">GET</span></td>
+            <td><code>/students/new</code></td>
+            <td><code>studentRoutes.js</code></td>
+            <td>Renders student registration form</td>
+            <td>HTML View</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method post">POST</span></td>
+            <td><code>/students</code></td>
+            <td><code>studentRoutes.js</code></td>
+            <td>Validates input and registers student</td>
+            <td>Form Action</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method get">GET</span></td>
+            <td><code>/students/:id</code></td>
+            <td><code>studentRoutes.js</code></td>
+            <td>Displays profile details for a given student ID</td>
+            <td>HTML View</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method get">GET</span></td>
+            <td><code>/students/:id/edit</code></td>
+            <td><code>studentRoutes.js</code></td>
+            <td>Renders edit form populated with current record</td>
+            <td>HTML View</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method post">POST</span></td>
+            <td><code>/students/:id/edit</code></td>
+            <td><code>studentRoutes.js</code></td>
+            <td>Validates updates and persists to database</td>
+            <td>Form Action</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method post">POST</span></td>
+            <td><code>/students/:id/delete</code></td>
+            <td><code>studentRoutes.js</code></td>
+            <td>Deletes student record from JSON storage</td>
+            <td>Form Action</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method get">GET</span></td>
+            <td><code>/api/students</code></td>
+            <td><code>apiRoutes.js</code></td>
+            <td>Returns all student records with optional search filter</td>
+            <td>REST JSON</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method get">GET</span></td>
+            <td><code>/api/students/:id</code></td>
+            <td><code>apiRoutes.js</code></td>
+            <td>Returns single student by ID in JSON format</td>
+            <td>REST JSON</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method post">POST</span></td>
+            <td><code>/api/students</code></td>
+            <td><code>apiRoutes.js</code></td>
+            <td>Validates and creates student from JSON body</td>
+            <td>REST JSON</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method put">PUT</span></td>
+            <td><code>/api/students/:id</code></td>
+            <td><code>apiRoutes.js</code></td>
+            <td>Validates and updates student from JSON body</td>
+            <td>REST JSON</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method delete">DELETE</span></td>
+            <td><code>/api/students/:id</code></td>
+            <td><code>apiRoutes.js</code></td>
+            <td>Deletes student record via REST API</td>
+            <td>REST JSON</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method get">GET</span></td>
+            <td><code>/api/stats</code></td>
+            <td><code>apiRoutes.js</code></td>
+            <td>Returns aggregated metrics and counts</td>
+            <td>REST JSON</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

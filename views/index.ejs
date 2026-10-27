@@ -1,0 +1,164 @@
+<%- include('partials/header') %>
+
+<!-- Dashboard Hero Header -->
+<div class="dashboard-hero">
+  <div class="hero-text">
+    <div class="badge-accent">ACADEMIC YEAR 2026-27</div>
+    <h1 class="page-title">Welcome to StudentSphere</h1>
+    <p class="page-subtitle">
+      Comprehensive student record management system with robust server-side validation and Express.js routing architecture.
+    </p>
+  </div>
+  <div class="hero-actions">
+    <a href="/students/new" class="btn btn-primary">
+      <span class="btn-icon">➕</span> Register New Student
+    </a>
+    <a href="/students" class="btn btn-outline">
+      <span class="btn-icon">📋</span> View All Students
+    </a>
+  </div>
+</div>
+
+<!-- Stats Counter Grid -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-header">
+      <span class="stat-label">Total Enrolled Students</span>
+      <span class="stat-icon-badge">👨‍🎓</span>
+    </div>
+    <div class="stat-value"><%= stats.totalStudents %></div>
+    <div class="stat-caption">Verified active records in local database</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-header">
+      <span class="stat-label">Academic Departments</span>
+      <span class="stat-icon-badge">🏛️</span>
+    </div>
+    <div class="stat-value"><%= stats.totalDepartments %></div>
+    <div class="stat-caption">Enrolling engineering disciplines</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-header">
+      <span class="stat-label">Server & System State</span>
+      <span class="stat-icon-badge">⚡</span>
+    </div>
+    <div class="stat-value status-online">Operational</div>
+    <div class="stat-caption">Express.js 4.21 &bull; Morgan &bull; Validation Active</div>
+  </div>
+</div>
+
+<!-- Main Dashboard Columns -->
+<div class="dashboard-sections-grid">
+  <!-- Left Column: Department Distribution -->
+  <div class="panel">
+    <div class="panel-header">
+      <h2 class="panel-title">Departmental Distribution</h2>
+      <span class="panel-badge">Enrolled Ratios</span>
+    </div>
+    <div class="panel-body">
+      <% if (Object.keys(stats.departmentBreakdown).length === 0) { %>
+        <p class="empty-text">No departmental student data currently enrolled.</p>
+      <% } else { %>
+        <div class="dept-list">
+          <% for (const [dept, count] of Object.entries(stats.departmentBreakdown)) { %>
+            <% const pct = stats.totalStudents > 0 ? Math.round((count / stats.totalStudents) * 100) : 0; %>
+            <div class="dept-row">
+              <div class="dept-meta">
+                <span class="dept-name"><%= dept %></span>
+                <span class="dept-count"><%= count %> students (<%= pct %>%)</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" style="width: <%= pct %>%;"></div>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Right Column: Quick Search & Filter Shortcut -->
+  <div class="panel">
+    <div class="panel-header">
+      <h2 class="panel-title">Quick Student Search</h2>
+      <span class="panel-badge">Lookup</span>
+    </div>
+    <div class="panel-body">
+      <form action="/students" method="GET" class="quick-search-form">
+        <label for="dash-search" class="form-label">Search by Student Name, PRN, or Department</label>
+        <div class="search-input-group">
+          <input
+            type="text"
+            id="dash-search"
+            name="search"
+            class="form-control"
+            placeholder="e.g. 202401040083 or Tejas"
+          >
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+        <p class="form-helper">Direct query executed through Express route parameter query handling.</p>
+      </form>
+
+      <div class="quick-links-box">
+        <h4>System Quick Actions</h4>
+        <div class="pill-group">
+          <a href="/students?year=Third+Year" class="filter-pill">Third Year Students</a>
+          <a href="/students?department=Computer+Engineering" class="filter-pill">Computer Engg</a>
+          <a href="/api/students" target="_blank" class="filter-pill">Raw JSON API</a>
+          <a href="/health" class="filter-pill">API Health Check</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Registrations Panel -->
+<div class="panel mt-4">
+  <div class="panel-header">
+    <h2 class="panel-title">Recently Registered Students</h2>
+    <a href="/students" class="panel-action-link">View Full Directory &rarr;</a>
+  </div>
+  <div class="panel-body p-0">
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>PRN</th>
+            <th>Full Name</th>
+            <th>Department</th>
+            <th>Year</th>
+            <th>Email</th>
+            <th>Registered On</th>
+            <th class="text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (stats.recentStudents.length === 0) { %>
+            <tr>
+              <td colspan="7" class="text-center py-4">No student records found in the database.</td>
+            </tr>
+          <% } else { %>
+            <% stats.recentStudents.forEach(student => { %>
+              <tr>
+                <td><span class="badge-prn"><%= student.prn %></span></td>
+                <td><strong><%= student.name %></strong></td>
+                <td><span class="badge-dept"><%= student.department %></span></td>
+                <td><%= student.year %></td>
+                <td><a href="mailto:<%= student.email %>" class="table-link"><%= student.email %></a></td>
+                <td><%= formatDate(student.createdAt) %></td>
+                <td class="text-right">
+                  <a href="/students/<%= student.id %>" class="btn-sm btn-outline">View</a>
+                  <a href="/students/<%= student.id %>/edit" class="btn-sm btn-outline">Edit</a>
+                </td>
+              </tr>
+            <% }); %>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

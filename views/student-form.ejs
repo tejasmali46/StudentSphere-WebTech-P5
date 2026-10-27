@@ -1,0 +1,208 @@
+<%- include('partials/header') %>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+  <a href="/">Dashboard</a> &gt; <a href="/students">Student Directory</a> &gt; <span><%= isEdit ? 'Edit Student' : 'New Registration' %></span>
+</div>
+
+<div class="form-page-wrapper">
+  <div class="form-card">
+    <div class="form-card-header">
+      <div class="form-badge"><%= isEdit ? 'RECORD MODIFICATION' : 'ENROLLMENT FORM' %></div>
+      <h1 class="form-title"><%= isEdit ? 'Edit Student Record' : 'Register New Student' %></h1>
+      <p class="form-subtitle">
+        <%= isEdit ? 'Update existing student details. All fields are re-validated server-side.' : 'Submit official student credentials. Data will undergo server-side validation before storage.' %>
+      </p>
+    </div>
+
+    <!-- Server-Side Validation Summary Banner -->
+    <% if (errors && Object.keys(errors).length > 0) { %>
+      <div class="alert alert-error" role="alert">
+        <div class="alert-header">
+          <span class="alert-icon">⚠️</span>
+          <strong>Server-Side Validation Failed (<%= Object.keys(errors).length %> <%= Object.keys(errors).length === 1 ? 'error' : 'errors' %> found)</strong>
+        </div>
+        <p class="alert-sub">Please review and resolve the field errors highlighted below before proceeding.</p>
+        <ul class="error-summary-list">
+          <% for (const [field, msg] of Object.entries(errors)) { %>
+            <li><strong><%= field.toUpperCase() %>:</strong> <%= msg %></li>
+          <% } %>
+        </ul>
+      </div>
+    <% } %>
+
+    <!-- Student Registration / Edit Form -->
+    <form action="<%= formAction %>" method="POST" class="styled-form" novalidate>
+      <% if (isEdit && student.id) { %>
+        <input type="hidden" name="id" value="<%= student.id %>">
+      <% } %>
+
+      <div class="form-grid">
+        <!-- Full Name -->
+        <div class="form-group col-span-2 <%= errors && errors.name ? 'has-error' : '' %>">
+          <label for="name" class="form-label">
+            Full Name <span class="required-star">*</span>
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value="<%= student.name || '' %>"
+            class="form-control <%= errors && errors.name ? 'is-invalid' : '' %>"
+            placeholder="e.g. Tejas Sanjay Mali"
+            required
+          >
+          <div class="field-hint">Must be 3–60 alphabetic characters, spaces, or hyphens.</div>
+          <% if (errors && errors.name) { %>
+            <div class="error-text">❌ <%= errors.name %></div>
+          <% } %>
+        </div>
+
+        <!-- PRN (Permanent Registration Number) -->
+        <div class="form-group col-span-1 <%= errors && errors.prn ? 'has-error' : '' %>">
+          <label for="prn" class="form-label">
+            PRN Number <span class="required-star">*</span>
+          </label>
+          <input
+            type="text"
+            id="prn"
+            name="prn"
+            value="<%= student.prn || '' %>"
+            class="form-control <%= errors && errors.prn ? 'is-invalid' : '' %>"
+            placeholder="e.g. 202401040083"
+            maxlength="12"
+            required
+          >
+          <div class="field-hint">10 to 12 digit unique collegiate PRN.</div>
+          <% if (errors && errors.prn) { %>
+            <div class="error-text">❌ <%= errors.prn %></div>
+          <% } %>
+        </div>
+
+        <!-- Date of Birth -->
+        <div class="form-group col-span-1 <%= errors && errors.dob ? 'has-error' : '' %>">
+          <label for="dob" class="form-label">
+            Date of Birth <span class="required-star">*</span>
+          </label>
+          <input
+            type="date"
+            id="dob"
+            name="dob"
+            value="<%= student.dob || '' %>"
+            class="form-control <%= errors && errors.dob ? 'is-invalid' : '' %>"
+            required
+          >
+          <div class="field-hint">Must not be future date; minimum age is 15 years.</div>
+          <% if (errors && errors.dob) { %>
+            <div class="error-text">❌ <%= errors.dob %></div>
+          <% } %>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group col-span-1 <%= errors && errors.email ? 'has-error' : '' %>">
+          <label for="email" class="form-label">
+            Institutional Email <span class="required-star">*</span>
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value="<%= student.email || '' %>"
+            class="form-control <%= errors && errors.email ? 'is-invalid' : '' %>"
+            placeholder="e.g. tejas.mali@mitaoe.ac.in"
+            required
+          >
+          <div class="field-hint">Valid email format required.</div>
+          <% if (errors && errors.email) { %>
+            <div class="error-text">❌ <%= errors.email %></div>
+          <% } %>
+        </div>
+
+        <!-- Mobile Number -->
+        <div class="form-group col-span-1 <%= errors && errors.mobile ? 'has-error' : '' %>">
+          <label for="mobile" class="form-label">
+            Mobile Number (India) <span class="required-star">*</span>
+          </label>
+          <div class="input-with-prefix">
+            <span class="input-prefix">+91</span>
+            <input
+              type="tel"
+              id="mobile"
+              name="mobile"
+              value="<%= student.mobile || '' %>"
+              class="form-control <%= errors && errors.mobile ? 'is-invalid' : '' %>"
+              placeholder="e.g. 9876543210"
+              maxlength="10"
+              required
+            >
+          </div>
+          <div class="field-hint">Exactly 10 digits starting with 6, 7, 8, or 9.</div>
+          <% if (errors && errors.mobile) { %>
+            <div class="error-text">❌ <%= errors.mobile %></div>
+          <% } %>
+        </div>
+
+        <!-- Department -->
+        <div class="form-group col-span-1 <%= errors && errors.department ? 'has-error' : '' %>">
+          <label for="department" class="form-label">
+            Academic Department <span class="required-star">*</span>
+          </label>
+          <select
+            name="department"
+            id="department"
+            class="form-control <%= errors && errors.department ? 'is-invalid' : '' %>"
+            required
+          >
+            <option value="">-- Choose Department --</option>
+            <% departments.forEach(dept => { %>
+              <option value="<%= dept %>" <%= student.department === dept ? 'selected' : '' %>>
+                <%= dept %>
+              </option>
+            <% }); %>
+          </select>
+          <div class="field-hint">Select sanctioned engineering branch.</div>
+          <% if (errors && errors.department) { %>
+            <div class="error-text">❌ <%= errors.department %></div>
+          <% } %>
+        </div>
+
+        <!-- Academic Year -->
+        <div class="form-group col-span-1 <%= errors && errors.year ? 'has-error' : '' %>">
+          <label for="year" class="form-label">
+            Year of Study <span class="required-star">*</span>
+          </label>
+          <select
+            name="year"
+            id="year"
+            class="form-control <%= errors && errors.year ? 'is-invalid' : '' %>"
+            required
+          >
+            <option value="">-- Choose Year of Study --</option>
+            <% years.forEach(yr => { %>
+              <option value="<%= yr %>" <%= student.year === yr ? 'selected' : '' %>>
+                <%= yr %>
+              </option>
+            <% }); %>
+          </select>
+          <div class="field-hint">Current class standing.</div>
+          <% if (errors && errors.year) { %>
+            <div class="error-text">❌ <%= errors.year %></div>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Form Action Controls -->
+      <div class="form-actions-footer">
+        <button type="submit" class="btn btn-primary btn-lg">
+          <span class="btn-icon"><%= isEdit ? '💾' : '🚀' %></span>
+          <%= isEdit ? 'Save Changes' : 'Register Student' %>
+        </button>
+        <a href="<%= isEdit && student.id ? '/students/' + student.id : '/students' %>" class="btn btn-secondary btn-lg">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

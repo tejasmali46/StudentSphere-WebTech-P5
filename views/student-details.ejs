@@ -1,0 +1,115 @@
+<%- include('partials/header') %>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+  <a href="/">Dashboard</a> &gt; <a href="/students">Student Directory</a> &gt; <span><%= student.name %></span>
+</div>
+
+<% if (alert) { %>
+  <div class="alert alert-<%= alert.type %>" role="alert">
+    <span class="alert-icon">✅</span>
+    <span class="alert-message"><%= alert.text %></span>
+    <button type="button" class="alert-close" onclick="this.parentElement.remove()">×</button>
+  </div>
+<% } %>
+
+<div class="details-card">
+  <!-- Profile Header Banner -->
+  <div class="profile-header">
+    <div class="profile-avatar">
+      <%= student.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() %>
+    </div>
+    <div class="profile-meta">
+      <div class="badge-dept-lg"><%= student.department %></div>
+      <h1 class="profile-name"><%= student.name %></h1>
+      <div class="profile-subline">
+        <span class="prn-tag">PRN: <strong><%= student.prn %></strong></span>
+        <span class="divider">&bull;</span>
+        <span class="year-tag"><%= student.year %></span>
+        <span class="divider">&bull;</span>
+        <span class="badge-active">Active Enrollment</span>
+      </div>
+    </div>
+    <div class="profile-actions">
+      <a href="/students/<%= student.id %>/edit" class="btn btn-primary">
+        <span class="btn-icon">✏️</span> Edit Profile
+      </a>
+      <form action="/students/<%= student.id %>/delete" method="POST" class="inline-form" onsubmit="return confirm('Confirm deletion of <%= student.name %>? This will permanently purge the record.');">
+        <button type="submit" class="btn btn-danger">
+          <span class="btn-icon">🗑️</span> Delete
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Profile Data Sections Grid -->
+  <div class="profile-sections-grid">
+    <!-- Section 1: Academic Credentials -->
+    <div class="info-section">
+      <h3 class="section-heading">
+        <span class="section-icon">🏛️</span> Academic Information
+      </h3>
+      <div class="info-table">
+        <div class="info-row">
+          <span class="info-label">Permanent Reg. Number (PRN)</span>
+          <span class="info-value font-mono"><strong><%= student.prn %></strong></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Enrolled Department</span>
+          <span class="info-value"><%= student.department %></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Current Academic Year</span>
+          <span class="info-value"><%= student.year %></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">System Record ID</span>
+          <span class="info-value font-mono text-muted"><%= student.id %></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Enrollment Timestamp</span>
+          <span class="info-value"><%= formatDate(student.createdAt) %> (<%= student.createdAt %>)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Personal & Contact Information -->
+    <div class="info-section">
+      <h3 class="section-heading">
+        <span class="section-icon">📞</span> Personal & Contact Details
+      </h3>
+      <div class="info-table">
+        <div class="info-row">
+          <span class="info-label">Official Email Address</span>
+          <span class="info-value">
+            <a href="mailto:<%= student.email %>" class="table-link"><%= student.email %></a>
+          </span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Mobile Number</span>
+          <span class="info-value font-mono">+91 <%= student.mobile %></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Date of Birth</span>
+          <span class="info-value"><%= student.dob %></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Affiliated Institution</span>
+          <span class="info-value">MIT Academy of Engineering, Pune</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">API Inspection</span>
+          <span class="info-value">
+            <a href="/api/students/<%= student.id %>" target="_blank" class="badge-code">GET /api/students/<%= student.id %></a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="details-footer">
+    <a href="/students" class="btn btn-secondary">&larr; Back to Student Directory</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

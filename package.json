@@ -1,0 +1,34 @@
+{
+  "name": "studentsphere",
+  "version": "1.0.0",
+  "description": "Student Information Portal with Express.js and Server-Side Validation (Web Technology Practical 5)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test tests/app.test.js"
+  },
+  "keywords": [
+    "express",
+    "nodejs",
+    "ejs",
+    "express-validator",
+    "student-portal",
+    "server-side-validation",
+    "mitaoe"
+  ],
+  "author": "Tejas Mali (PRN: 202401040083)",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-validator": "^7.2.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "supertest": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

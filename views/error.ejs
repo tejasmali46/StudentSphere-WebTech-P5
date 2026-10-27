@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+
+<div class="error-wrapper">
+  <div class="error-status-badge">HTTP <%= statusCode || 500 %></div>
+  <h1 class="error-title"><%= title || 'Application Error' %></h1>
+  <p class="error-desc">
+    <%= message || 'An unexpected operational error occurred while processing your request.' %>
+  </p>
+
+  <% if (error && error.stack) { %>
+    <div class="dev-stack-box">
+      <h4>Development Stack Trace (Hidden in Production)</h4>
+      <pre><code><%= error.stack %></code></pre>
+    </div>
+  <% } %>
+
+  <div class="error-buttons">
+    <a href="/" class="btn btn-primary">Return to Safety (Dashboard)</a>
+    <a href="/students" class="btn btn-outline">Student Directory</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

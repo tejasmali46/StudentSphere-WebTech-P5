@@ -1,0 +1,138 @@
+<%- include('partials/header') %>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+  <a href="/">Dashboard</a> &gt; <span>Student Directory</span>
+</div>
+
+<div class="page-header-row">
+  <div>
+    <h1 class="page-title">Enrolled Student Directory</h1>
+    <p class="page-subtitle">View, search, edit, or remove engineering student records.</p>
+  </div>
+  <div>
+    <a href="/students/new" class="btn btn-primary">
+      <span class="btn-icon">➕</span> Register New Student
+    </a>
+  </div>
+</div>
+
+<!-- Dynamic Alert Notification -->
+<% if (alert) { %>
+  <div class="alert alert-<%= alert.type %>" role="alert">
+    <span class="alert-icon"><%= alert.type === 'success' ? '✅' : 'ℹ️' %></span>
+    <span class="alert-message"><%= alert.text %></span>
+    <button type="button" class="alert-close" onclick="this.parentElement.remove()">×</button>
+  </div>
+<% } %>
+
+<!-- Filter & Search Controls -->
+<div class="filter-card">
+  <form action="/students" method="GET" class="filter-form">
+    <div class="filter-group flex-2">
+      <label for="search" class="filter-label">Search Query</label>
+      <input
+        type="text"
+        id="search"
+        name="search"
+        value="<%= search %>"
+        class="form-control"
+        placeholder="Search by name, PRN, or email..."
+      >
+    </div>
+
+    <div class="filter-group flex-1">
+      <label for="department" class="filter-label">Department</label>
+      <select name="department" id="department" class="form-control">
+        <option value="">All Departments</option>
+        <% departments.forEach(dept => { %>
+          <option value="<%= dept %>" <%= department === dept ? 'selected' : '' %>><%= dept %></option>
+        <% }); %>
+      </select>
+    </div>
+
+    <div class="filter-group flex-1">
+      <label for="year" class="filter-label">Year of Study</label>
+      <select name="year" id="year" class="form-control">
+        <option value="">All Academic Years</option>
+        <% years.forEach(yr => { %>
+          <option value="<%= yr %>" <%= year === yr ? 'selected' : '' %>><%= yr %></option>
+        <% }); %>
+      </select>
+    </div>
+
+    <div class="filter-actions">
+      <button type="submit" class="btn btn-primary">Apply Filters</button>
+      <% if (search || department || year) { %>
+        <a href="/students" class="btn btn-secondary">Clear</a>
+      <% } %>
+    </div>
+  </form>
+</div>
+
+<!-- Directory Results Table -->
+<div class="panel">
+  <div class="panel-header">
+    <div class="panel-title">
+      Student Records (<%= students.length %> <%= students.length === 1 ? 'student' : 'students' %> found)
+    </div>
+    <div class="panel-actions">
+      <a href="/api/students<%= search ? '?search=' + encodeURIComponent(search) : '' %>" target="_blank" class="btn-sm btn-outline">Export JSON</a>
+    </div>
+  </div>
+
+  <div class="panel-body p-0">
+    <% if (students.length === 0) { %>
+      <div class="empty-state">
+        <div class="empty-icon">📂</div>
+        <h3>No student records matching your query</h3>
+        <p>Try modifying your search keywords or filter criteria, or register a new student.</p>
+        <div class="empty-actions">
+          <a href="/students" class="btn btn-outline">Reset Filters</a>
+          <a href="/students/new" class="btn btn-primary">Register Student</a>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>PRN</th>
+              <th>Student Name</th>
+              <th>Department</th>
+              <th>Year</th>
+              <th>Mobile</th>
+              <th>Email</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% students.forEach(student => { %>
+              <tr>
+                <td><span class="badge-prn"><%= student.prn %></span></td>
+                <td>
+                  <a href="/students/<%= student.id %>" class="student-name-link">
+                    <strong><%= student.name %></strong>
+                  </a>
+                </td>
+                <td><span class="badge-dept"><%= student.department %></span></td>
+                <td><%= student.year %></td>
+                <td><span class="font-mono"><%= student.mobile %></span></td>
+                <td><a href="mailto:<%= student.email %>" class="table-link"><%= student.email %></a></td>
+                <td class="text-center action-buttons-cell">
+                  <a href="/students/<%= student.id %>" class="btn-action btn-view" title="View Details">👁️ View</a>
+                  <a href="/students/<%= student.id %>/edit" class="btn-action btn-edit" title="Edit Record">✏️ Edit</a>
+                  <form action="/students/<%= student.id %>/delete" method="POST" class="inline-form" onsubmit="return confirm('Are you sure you want to delete student <%= student.name %> (PRN: <%= student.prn %>)? This action cannot be undone.');">
+                    <button type="submit" class="btn-action btn-delete" title="Delete Student">🗑️ Delete</button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

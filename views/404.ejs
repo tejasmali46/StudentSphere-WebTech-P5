@@ -1,0 +1,18 @@
+<%- include('partials/header') %>
+
+<div class="error-wrapper">
+  <div class="error-illustration">🔍 404</div>
+  <h1 class="error-title">Page or Record Not Found</h1>
+  <p class="error-desc">
+    <%= message || 'The URL you requested does not map to any active route or student entity in StudentSphere.' %>
+  </p>
+  <div class="error-meta-box">
+    <strong>Attempted Path:</strong> <code><%= path || 'Unknown' %></code>
+  </div>
+  <div class="error-buttons">
+    <a href="/" class="btn btn-primary">Return to Dashboard</a>
+    <a href="/students" class="btn btn-outline">Browse Student Directory</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

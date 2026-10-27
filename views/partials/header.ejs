@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title || 'StudentSphere' %></title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Academic Top Banner -->
+  <div class="top-announcement">
+    <div class="container announcement-content">
+      <span>🏛️ <strong>MIT Academy of Engineering, Pune</strong> &bull; Department of Computer Engineering</span>
+      <span class="badge-sub">WT Pract-5 &bull; ExpressJS & Server-Side Validation</span>
+    </div>
+  </div>
+
+  <!-- Primary Navigation -->
+  <header class="main-header">
+    <div class="container nav-wrapper">
+      <a href="/" class="brand-link">
+        <div class="brand-icon">🎓</div>
+        <div class="brand-text">
+          <span class="brand-title">StudentSphere</span>
+          <span class="brand-tagline">Academic Information Portal</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="/" class="nav-item <%= currentPath === '/' ? 'active' : '' %>">
+          <span class="nav-icon">📊</span> Dashboard
+        </a>
+        <a href="/students" class="nav-item <%= currentPath.startsWith('/students') && currentPath !== '/students/new' ? 'active' : '' %>">
+          <span class="nav-icon">👥</span> Student Directory
+        </a>
+        <a href="/students/new" class="nav-item nav-btn <%= currentPath === '/students/new' ? 'active' : '' %>">
+          <span class="nav-icon">➕</span> Register Student
+        </a>
+        <a href="/about" class="nav-item <%= currentPath === '/about' ? 'active' : '' %>">
+          <span class="nav-icon">ℹ️</span> About
+        </a>
+        <a href="/api/students" target="_blank" class="nav-item api-pill" title="View JSON REST API">
+          <span class="badge-code">API</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Global Main Container -->
+  <main class="page-content">
+    <div class="container">

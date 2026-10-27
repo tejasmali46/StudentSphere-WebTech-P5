@@ -1,0 +1,57 @@
+[
+  {
+    "id": "std_101",
+    "name": "Tejas Mali",
+    "prn": "202401040083",
+    "email": "tejas.mali@mitaoe.ac.in",
+    "mobile": "9876543210",
+    "department": "Computer Engineering",
+    "year": "Third Year",
+    "dob": "2004-05-14",
+    "createdAt": "2026-08-10T09:30:00.000Z"
+  },
+  {
+    "id": "std_102",
+    "name": "Ananya Sharma",
+    "prn": "202401040012",
+    "email": "ananya.sharma@mitaoe.ac.in",
+    "mobile": "9823456789",
+    "department": "Computer Engineering",
+    "year": "Third Year",
+    "dob": "2004-09-22",
+    "createdAt": "2026-08-11T11:15:00.000Z"
+  },
+  {
+    "id": "std_103",
+    "name": "Rohan Deshmukh",
+    "prn": "202301040045",
+    "email": "rohan.deshmukh@mitaoe.ac.in",
+    "mobile": "9765432109",
+    "department": "Information Technology",
+    "year": "Final Year",
+    "dob": "2003-12-04",
+    "createdAt": "2026-08-12T14:20:00.000Z"
+  },
+  {
+    "id": "std_104",
+    "name": "Pooja Kulkarni",
+    "prn": "202501040034",
+    "email": "pooja.kulkarni@mitaoe.ac.in",
+    "mobile": "9890123456",
+    "department": "Electronics & Telecommunication",
+    "year": "Second Year",
+    "dob": "2005-03-18",
+    "createdAt": "2026-08-14T10:00:00.000Z"
+  },
+  {
+    "id": "std_105",
+    "name": "Aditya Patil",
+    "prn": "202401040099",
+    "email": "aditya.patil@mitaoe.ac.in",
+    "mobile": "9922334455",
+    "department": "Mechanical Engineering",
+    "year": "Third Year",
+    "dob": "2004-07-29",
+    "createdAt": "2026-08-15T16:45:00.000Z"
+  }
+]
